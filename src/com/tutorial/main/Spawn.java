@@ -17,13 +17,14 @@ public class Spawn {
 	public void tick()
 	{
 		scoreKeep++;
+		
 		//	score will resets to 0 when it reaches 1000 and gain level
+		
 		if (scoreKeep >= 300)
 		{
 			scoreKeep = 0;
 			hud.setLevel(hud.getLevel() + 1);
 			//	will spawn an enemy every 300 pts
-			//handler.addObject(new BasicEnemy(r.nextInt(Game.WIDTH), r.nextInt(Game.HEIGHT), ID.BasicEnemy, handler));
 			if(hud.getLevel() == 2)
 			{
 				handler.addObject(new BasicEnemy(r.nextInt(Game.WIDTH), r.nextInt(Game.HEIGHT), ID.BasicEnemy, handler));
