@@ -3,13 +3,17 @@ package com.tutorial.main;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
+import com.tutorial.main.Game.STATE;
+
 public class KeyInput extends KeyAdapter{
 	
 	private Handler handler;
 	private boolean[] keyDown = new boolean[4];
+	Game game;
 	
-	public KeyInput(Handler handler) {
+	public KeyInput(Handler handler, Game game) {
 		this.handler = handler;
+		this.game = game;
 		
 		for(int i = 0; i < 4 ; i++)
 		{
@@ -32,7 +36,19 @@ public class KeyInput extends KeyAdapter{
 				if (key == KeyEvent.VK_D) { tempObject.setVelX(6); keyDown[3] = true;}
 				
 			}
-			if(key == KeyEvent.VK_ESCAPE)System.exit(1);
+			
+			// pause the game
+			if(key == KeyEvent.VK_ESCAPE)
+			{
+				if (game.gameState == STATE.Game)
+				{
+					if(Game.pause) 
+						Game.pause = false;
+					else 
+						Game.pause = true;
+				}
+				
+			}
 		}
 	}
 	

@@ -2,6 +2,7 @@ package com.tutorial.main;
 
 import java.awt.Canvas;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 import java.util.Random;
@@ -19,6 +20,7 @@ public class Game extends Canvas implements Runnable{
 	private HUD hud;
 	private Spawn spawner;
 	private Menu menu;
+	public static boolean pause = false;
 	
 	public enum STATE{
 		Menu, Game, End;
@@ -31,11 +33,13 @@ public class Game extends Canvas implements Runnable{
 		handler = new Handler();
 		hud = new HUD();
 		menu = new Menu(this, handler, hud);
-		this.addKeyListener(new KeyInput(handler));
+		this.addKeyListener(new KeyInput(handler, this));
 		this.addMouseListener(menu);
 		
-		new Window(WIDTH, HEIGHT, "My game", this);
+		AudioPlayer.load();	//	load sound but not playing it yet
+		AudioPlayer.getMusic("bgm").loop();	// the music will play now
 		
+		new Window(WIDTH, HEIGHT, "My game", this);
 		
 		spawner = new Spawn(handler, hud);
 
@@ -109,26 +113,31 @@ public class Game extends Canvas implements Runnable{
 	}
 	
 	private void tick() {
-		handler.tick();
+		
 		
 		//Game state behavior
 		if(gameState == STATE.Game) {
-			hud.tick();
-			spawner.tick();
 			
-			
-			if(HUD.HEALTH <= 0)
+			if(!pause)
 			{
-				handler.object.clear();
-				HUD.HEALTH = 100;
-				hud.setLevel(1);
-				hud.score(0);
-				gameState = STATE.End;
-				
+				hud.tick();
+				spawner.tick();
+				handler.tick();
+			
+				if(HUD.HEALTH <= 0)
+				{
+					handler.object.clear();
+					HUD.HEALTH = 100;
+					hud.setLevel(1);
+					hud.score(0);
+					gameState = STATE.End;	
+				}
 			}
+			
 		}
 		else if(gameState == STATE.Menu || gameState == STATE.End) {
 			menu.tick();
+			handler.tick();
 		}
 		
 	}
@@ -147,6 +156,12 @@ public class Game extends Canvas implements Runnable{
 
 		handler.render(g);
 		
+		// PAUSED 
+		if(pause)
+		{
+			g.setColor(Color.white);
+			g.drawString("Game Paused", 300, 300);
+		}
 		//	Game state behavior
 		if(gameState == STATE.Game)
 			hud.render(g);
