@@ -2,10 +2,9 @@ package com.tutorial.main;
 
 import java.awt.Canvas;
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
-import java.util.Random;
+//import java.util.Random;
 
 public class Game extends Canvas implements Runnable{
 	
@@ -15,15 +14,16 @@ public class Game extends Canvas implements Runnable{
 	
 	private Thread thread;
 	private boolean running = false;
-	private Random r;
+	//private Random r;
 	private Handler handler;
 	private HUD hud;
 	private Spawn spawner;
 	private Menu menu;
+	private Shop shop;
 	public static boolean pause = false;
 	
 	public enum STATE{
-		Menu, Game, End;
+		Menu, Game, End, Shop;
 	};
 	
 	public STATE gameState = STATE.Menu;
@@ -33,17 +33,19 @@ public class Game extends Canvas implements Runnable{
 		handler = new Handler();
 		hud = new HUD();
 		menu = new Menu(this, handler, hud);
+		shop = new Shop(handler, hud);
 		this.addKeyListener(new KeyInput(handler, this));
 		this.addMouseListener(menu);
+		this.addMouseListener(shop);
 		
-		AudioPlayer.load();	//	load sound but not playing it yet
+		AudioPlayer.load();	// load sound but not playing it yet
 		AudioPlayer.getMusic("bgm").loop();	// the music will play now
 		
 		new Window(WIDTH, HEIGHT, "My game", this);
 		
 		spawner = new Spawn(handler, hud);
 
-		r = new Random();
+		//r = new Random();
 		
 		if(gameState == STATE.Game)
 		{
@@ -154,7 +156,6 @@ public class Game extends Canvas implements Runnable{
 		g.setColor(Color.black);
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 
-		handler.render(g);
 		
 		// PAUSED 
 		if(pause)
@@ -163,10 +164,18 @@ public class Game extends Canvas implements Runnable{
 			g.drawString("Game Paused", 300, 300);
 		}
 		//	Game state behavior
-		if(gameState == STATE.Game)
+		if(gameState == STATE.Game) {
 			hud.render(g);
-		else if(gameState == STATE.Menu || gameState == STATE.End) {
+			handler.render(g);
+		}
+		else if(gameState == STATE.Menu || gameState == STATE.End)
+		{
 			menu.render(g);
+			handler.render(g);
+		}
+		else if(gameState == STATE.Shop)
+		{
+			shop.render(g);
 		}
 		
 		g.dispose();
