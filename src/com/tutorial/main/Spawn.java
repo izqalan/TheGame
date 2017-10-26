@@ -20,12 +20,17 @@ public class Spawn {
 		
 		//	score will resets to 0 when it reaches 1000 and gain level
 		
-		if (scoreKeep >= 300)
+		if (scoreKeep >= 500)
 		{
+			
 			scoreKeep = 0;
 			hud.setLevel(hud.getLevel() + 1);
-			//	will spawn an enemy every 300 pts
-			if(hud.getLevel() == 2)
+			//	will lvl up and spawn an enemy every 500 pts
+			if(hud.getLevel() ==  1)
+			{
+				handler.addObject(new BasicEnemy(r.nextInt(Game.WIDTH), r.nextInt(Game.HEIGHT), ID.BasicEnemy, handler));
+			}
+			else if(hud.getLevel() == 2)
 			{
 				handler.addObject(new BasicEnemy(r.nextInt(Game.WIDTH), r.nextInt(Game.HEIGHT), ID.BasicEnemy, handler));
 			}
@@ -41,6 +46,12 @@ public class Spawn {
 			{
 				handler.clearEnemy();
 				handler.addObject(new EnemyBoss((Game.WIDTH / 2) - 42, -120, ID.EnemyBoss, handler));
+			}
+			else if(hud.getLevel() == 7)
+			{
+				handler.clearEnemy();
+				handler.addObject(new FastEnemy(r.nextInt(Game.WIDTH), r.nextInt(Game.HEIGHT), ID.FastEnemy, handler));
+				handler.addObject(new FastEnemy(r.nextInt(Game.WIDTH), r.nextInt(Game.HEIGHT), ID.FastEnemy, handler));
 			}
 			
 		}

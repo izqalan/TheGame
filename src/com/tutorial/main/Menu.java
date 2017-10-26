@@ -12,13 +12,16 @@ public class Menu extends MouseAdapter {
 	
 	private Game game;
 	private Handler handler;
+	private Shop shop;
+	private HUD hud;
 
 	
-	public Menu(Game game, Handler handler, HUD hud)
+	public Menu(Game game, Handler handler, HUD hud, Shop shop)
 	{
-		this.game = game;
-		
 		this.handler = handler;
+		this.game = game;
+		this.shop = shop;
+		
 	}
 	
 	public void mousePressed(MouseEvent e) {
@@ -48,6 +51,11 @@ public class Menu extends MouseAdapter {
 		// Game over screen buttons END STATE
 		if(game.gameState == STATE.End)
 		{
+			shop.bo1 = 200;
+			shop.bo2 = 200;
+			handler.speed = 6;
+			//hud.score = 0;
+			HUD.HEALTH = 100;
 			//back button
 			if(mouseOver(mx, my,270, 375, 100, 50))
 			{

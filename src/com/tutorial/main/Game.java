@@ -32,14 +32,16 @@ public class Game extends Canvas implements Runnable{
 	{
 		handler = new Handler();
 		hud = new HUD();
-		menu = new Menu(this, handler, hud);
 		shop = new Shop(handler, hud);
+		menu = new Menu(this, handler, hud, shop);
 		this.addKeyListener(new KeyInput(handler, this));
 		this.addMouseListener(menu);
 		this.addMouseListener(shop);
 		
 		AudioPlayer.load();	// load sound but not playing it yet
-		AudioPlayer.getMusic("bgm").loop();	// the music will play now
+		AudioPlayer.getMusic("bgm").loop(1, 0.03f);;	// the music will play now (pitch, volume)
+		
+		
 		
 		new Window(WIDTH, HEIGHT, "My game", this);
 		
@@ -64,6 +66,7 @@ public class Game extends Canvas implements Runnable{
 				
 		}*/
 	}
+
 
 	public synchronized void start() {
 		thread = new Thread(this);
@@ -135,7 +138,6 @@ public class Game extends Canvas implements Runnable{
 					gameState = STATE.End;	
 				}
 			}
-			
 		}
 		else if(gameState == STATE.Menu || gameState == STATE.End) {
 			menu.tick();
@@ -195,7 +197,7 @@ public class Game extends Canvas implements Runnable{
 	
 	public static void main(String[] args) {
 		new Game();
-
+		
 	}
 
 	

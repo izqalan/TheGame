@@ -11,8 +11,8 @@ public class Shop extends MouseAdapter{
 	Handler handler;
 	HUD hud;
 	
-	private int bo1 = 200;	// box 1
-	private int bo2 = 200;
+	public int bo1 = 200;	// box 1
+	public int bo2 = 200;
 	
 	public Shop(Handler handler, HUD hud)
 	{
@@ -65,11 +65,16 @@ public class Shop extends MouseAdapter{
 		{
 			if(my >= 100 && my <= 180)
 			{
-				hud.score(hud.getScore() - bo2);
-				bo2 += 100;
-				handler.speed += 2;
+				if(hud.getScore() >= bo2);
+				{
+					if(handler.speed <= 12)
+					{
+						hud.score(hud.getScore() - bo2);
+						bo2 += 100;
+						handler.speed += 1;
+					}
+				}
 			}
 		}
-		
 	}
 }
