@@ -5,6 +5,10 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.Desktop;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import com.tutorial.main.Game.STATE;
 
@@ -40,6 +44,19 @@ public class Menu extends MouseAdapter {
 				game.gameState = STATE.Game;
 				handler.addObject(new Player(Game.WIDTH/2-100, Game.HEIGHT/2, ID.Player, handler));
 				handler.addObject(new BasicEnemy((Game.WIDTH / 2) - 42, -120, ID.BasicEnemy, handler));
+			}
+
+			// github button action
+			if (mouseOver(mx, my, 210, 250, 200, 64))
+			{
+				if(Desktop.isDesktopSupported()){
+					try
+					{
+						Desktop.getDesktop().browse(new URI("https://github.com/izqalan"));
+					} catch (IOException | URISyntaxException uri){
+						uri.printStackTrace();
+					}
+				}
 			}
 			//exit button
 			if(mouseOver(mx, my, 500, 375, 100, 50))
@@ -101,11 +118,13 @@ public class Menu extends MouseAdapter {
 			g.setFont(fnt);
 			g.setColor(Color.white);
 			g.drawString("Menu", 240, 70);
-		
+
+			// Play the game box
 			g.setFont(fnt2);
 			g.drawString("Play", 280, 190);
 			g.drawRect(210, 150, 200, 64);
-		
+
+			// github link
 			g.drawString("Github", 270, 290);
 			g.drawRect(210, 250, 200, 64);
 		
